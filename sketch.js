@@ -35,10 +35,10 @@ function preload() {
   dropletAnim = loadAnimation(dropletSpritesheet);
   droplet = createSprite(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, 60, 68);
   droplet.moveSpeed = 5;
-  const rainSpritesheet = loadSpriteSheet("img/rain.png", 500, 1000, 20);
+  const rainSpritesheet = loadSpriteSheet("img/rain.png", 1000, 2000, 24);
   rainAnim = loadAnimation(rainSpritesheet);
-  rain = createSprite(CANVAS_WIDTH, CANVAS_HEIGHT, 500, 1000);
-  rain.moveSpeed = 5;
+  rain = createSprite(1000, 2000, 0, 0);
+  rain.moveSpeed = 1;
 
   sounds.forEach((sound, i) => {
     sounds[i] = loadSound(`sounds/${i}.mp3`)
@@ -54,7 +54,7 @@ rain.leftSound = sounds[1];
 
 function setup() {
   createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-  rain.addAnimation("move", rainAnim);
+  rain.addAnimation(rainAnim);
   droplet.addAnimation("move", dropletAnim);
   rain.setDefaultCollider();
   droplet.setDefaultCollider();
@@ -97,7 +97,7 @@ function drawObject(object) {
 
 function draw() {
 
-  animation(rainAnim, 500, 1000);
+  animation(rainAnim, 0, 0);
 
   update(droplet);
 
