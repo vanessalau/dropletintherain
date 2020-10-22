@@ -29,6 +29,11 @@ let droplet;
 let dropletAnim;
 let rain;
 let rainAnim;
+let chihuahua;
+let chihuahuaAnim;
+let cat;
+let poop;
+let poopAnim;
 
 function preload() {
   const dropletSpritesheet = loadSpriteSheet("img/droplet copy 2.png", 60, 68, 12);
@@ -37,8 +42,17 @@ function preload() {
   droplet.moveSpeed = 5;
   const rainSpritesheet = loadSpriteSheet("img/rain.png", 1000, 2000, 24);
   rainAnim = loadAnimation(rainSpritesheet);
-  rain = createSprite(1000, 2000, 0, 0);
+  rain = createSprite(500, 1000, 0, 0);
   rain.moveSpeed = 1;
+  const chihuahuaSpritesheet = loadSpriteSheet("img/chihuahua.png", 36, 36, 4);
+  chihuahuaAnim = loadAnimation(chihuahuaSpritesheet);
+  chihuahua = createSprite(100, 100, 36, 36);
+  chihuahua.moveSpeed = 1;
+  const poopSpritesheet = loadSpriteSheet("img/poop.png", 36, 36, 5);
+  poopAnim = loadAnimation(poopSpritesheet);
+  poop = createSprite(200, 100, 36, 36);
+  poop.moveSpeed = 1;
+  cat = loadImage("img/cat.png");
 
   sounds.forEach((sound, i) => {
     sounds[i] = loadSound(`sounds/${i}.mp3`)
@@ -56,50 +70,59 @@ function setup() {
   createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
   rain.addAnimation(rainAnim);
   droplet.addAnimation("move", dropletAnim);
+  chihuahua.addAnimation(chihuahuaAnim);
+  poop.addAnimation(poopAnim);
   rain.setDefaultCollider();
   droplet.setDefaultCollider();
+  chihuahua.setDefaultCollider();
+  poop.setDefaultCollider();
 
 
 }
 
-function update(object) {
+function update(droplet) {
   if (keyDown("up") || keyDown("down") || keyDown("left") || keyDown("right")) {
     if (keyDown("up")) {
-      object.addSpeed(2, 270);
+      droplet.addSpeed(2, 270);
     }
     if (keyDown("down")) {
-      object.addSpeed(2, 90);
+      droplet.addSpeed(2, 90);
     }
     if (keyDown("left")) {
-      object.addSpeed(2, 180);
-      object.mirrorX(-1);
+      droplet.addSpeed(2, 180);
+      droplet.mirrorX(-1);
     }
     if (keyDown("right")) {
-      object.addSpeed(2, 0);
-      object.mirrorX(1);
+      droplet.addSpeed(2, 0);
+      droplet.mirrorX(1);
     }
   } else {
-    object.setSpeed(0);
+    droplet.setSpeed(0);
   }
-  drawObject(object);
+  drawObject(droplet);
 }
 
 
 function drawObject(object) {
-  if (object.getSpeed() > 0.0001) {
-    object.changeAnimation("move");
-  } else {
-    object.changeImage("still");
-  }
+
   droplet.limitSpeed(droplet.moveSpeed);
-  drawSprite(object);
+  drawSprite(droplet);
+  drawSprite(chihuahua);
+  drawSprite(poop);
 }
 
 function draw() {
+  
 
   animation(rainAnim, 0, 0);
 
   update(droplet);
+
+  update(chihuahua);
+
+  update(poop);
+
+  image(cat, 200, 200);
 
   drawLine(leftEdge);
   drawLine(rightEdge);
