@@ -1,34 +1,11 @@
-const CANVAS_WIDTH = 500;
-const CANVAS_HEIGHT = 1000;
-const lineColor = [0, 0, 0];
-const activeLineColor = [230, 246, 250];
-const lineWidth = 2;
-const activelineWidth = 2;
-const sounds = Array.from({ length: 2 });
+const CANVAS_WIDTH = 600;
+const CANVAS_HEIGHT = 800;
 
 
-const leftEdge = {
-  x1: 0,
-  y1: 0,
-  x2: 0,
-  y2: 1000,
-  color: lineColor,
-  width: lineWidth,
-}
-
-const rightEdge = {
-  x1: 0,
-  y1: 0,
-  x2: 0,
-  y2: 1000,
-  color: lineColor,
-  width: lineWidth,
-}
 
 let droplet;
 let dropletAnim;
 let rain;
-let rainAnim;
 let chihuahua;
 let chihuahuaAnim;
 let cat;
@@ -36,46 +13,27 @@ let poop;
 let poopAnim;
 
 function preload() {
-  const dropletSpritesheet = loadSpriteSheet("img/droplet copy 2.png", 60, 68, 12);
+  const dropletSpritesheet = loadSpriteSheet('img/droplet copy 2.png', 60, 68, 12);
   dropletAnim = loadAnimation(dropletSpritesheet);
-  droplet = createSprite(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, 60, 68);
-  droplet.moveSpeed = 5;
-  const rainSpritesheet = loadSpriteSheet("img/rain.png", 1000, 2000, 24);
-  rainAnim = loadAnimation(rainSpritesheet);
-  rain = createSprite(500, 1000, 0, 0);
-  rain.moveSpeed = 1;
-  const chihuahuaSpritesheet = loadSpriteSheet("img/chihuahua.png", 36, 36, 4);
-  chihuahuaAnim = loadAnimation(chihuahuaSpritesheet);
-  chihuahua = createSprite(100, 100, 36, 36);
-  chihuahua.moveSpeed = 1;
-  const poopSpritesheet = loadSpriteSheet("img/poop.png", 36, 36, 5);
-  poopAnim = loadAnimation(poopSpritesheet);
-  poop = createSprite(200, 100, 36, 36);
-  poop.moveSpeed = 1;
+  droplet = createSprite(CANVAS_WIDTH / 2, 650, 60, 68);
+  droplet.moveSpeed = 2;
+
+  rain = loadAnimation('img/rain/sprite_00.png','img/rain/sprite_23.png');
+
+  chihuahua = loadAnimation('img/chihuahua/chichi0.png','img/chihuahua/chichi3.png');
+
+  poop = loadAnimation('img/poop/poop0.png','img/poop/poop4.png');
+
   cat = loadImage("img/cat.png");
-
-  sounds.forEach((sound, i) => {
-    sounds[i] = loadSound(`sounds/${i}.mp3`)
-  })
-
-console.log(sounds);
-
-rain.rightSound = sounds[0];
-rain.leftSound = sounds[1];
-
 
 }
 
 function setup() {
   createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-  rain.addAnimation(rainAnim);
   droplet.addAnimation("move", dropletAnim);
-  chihuahua.addAnimation(chihuahuaAnim);
-  poop.addAnimation(poopAnim);
-  rain.setDefaultCollider();
   droplet.setDefaultCollider();
-  chihuahua.setDefaultCollider();
-  poop.setDefaultCollider();
+
+
 
 
 }
@@ -107,47 +65,34 @@ function drawObject(object) {
 
   droplet.limitSpeed(droplet.moveSpeed);
   drawSprite(droplet);
-  drawSprite(chihuahua);
-  drawSprite(poop);
 }
 
 function draw() {
-  
 
-  animation(rainAnim, 0, 0);
+  animation(rain, 0, 0);
 
   update(droplet);
 
-  update(chihuahua);
+  animation(chihuahua, 100, 100);
+//  for (var i = 0; i < this.chihuahua.length; i++)
+//  this.chihuahua[i].start(Math.random() * 5);
 
-  update(poop);
+  animation(poop, 400, 100);
 
-  image(cat, 200, 200);
+  image(cat, 200, 100);
 
-  drawLine(leftEdge);
-  drawLine(rightEdge);
+//everything stops when i do this
+//  droplet.collide(cat)
+   
+
 }
 
 
 
-function drawLine({x1, y1, x2, y2, color, width}){
-  stroke(color);
-  strokeWeight(width);
-  line(x1, y1, x2, y2);
-}
 
 
 
-function activateLine(line){
-
-  line.color = activeLineColor;
-  line.width = activelineWidth;
-
-  setTimeout(() => resetLines(line), 500);
-}
 
 
-function resetLines(line){
-  line.color = lineColor;
-  line.width = lineWidth;
-}
+
+
